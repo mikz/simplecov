@@ -11,7 +11,7 @@ module SimpleCov::CommandGuesser
     attr_accessor :original_run_command
     
     def guess
-      from_env || from_command_line_options || from_defined_constants
+      [from_command_line_options || from_defined_constants, from_env].compact.join(' ')
     end
     
     private

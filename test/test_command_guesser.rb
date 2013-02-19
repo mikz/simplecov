@@ -16,4 +16,14 @@ class TestCommandGuesser < Test::Unit::TestCase
   should_guess_command_name "Cucumber Features", 'features', 'cucumber', 'cucumber features'
   should_guess_command_name "RSpec", '/some/path/spec/foo.rb'
   should_guess_command_name "Unit Tests", 'some_arbitrary_command with arguments' # Because Test::Unit const is defined!
+
+  def test_with_parallel_tests
+    ENV['PARALLEL_TEST_GROUPS'] = '2'
+    ENV['TEST_ENV_NUMBER'] = ''
+
+    assert_equal 'Unit Tests (1/2)', SimpleCov::CommandGuesser.guess
+  ensure
+    ENV['PARALLEL_TEST_GROUPS'] = ENV['TEST_ENV_NUMBER'] = nil
+  end
+
 end if SimpleCov.usable?
